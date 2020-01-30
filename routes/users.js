@@ -1,5 +1,14 @@
 const router = require('express').Router();
 const User = require('../models/user.js');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
+const auth = require('../middleware/middleware');
+
+router.get('/', auth, (req, res)=>{
+    User.findById(req.user.id, (err, user)=>{
+        res.json(user);
+    });
+});
 
 router.route('/addUser').post(async (req, res)=>{
     const {
@@ -19,8 +28,12 @@ router.route('/addUser').post(async (req, res)=>{
             res.json(err);
         }
         else{
+            const token = jwt.sign({
+                id: user.id,
+            }, process.env.jwt_secret);
             res.status(200).json({
-                message: "User Saved successfully"
+                message: "User Saved successfully",
+                token
             });
         }
     });
@@ -100,12 +113,6 @@ router.route("/:username").delete((req, res)=>{
         }
     });
 });
-
-// router.route("/all").get((req, res)=>{
-//     User.find({}, (err, users)=>{
-//         res.json(users);
-//     });
-// });
 
 router.route("/:username").get((req, res)=>{
     User.findOne({username: req.params.username}, (err, user)=>{

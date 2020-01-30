@@ -3,6 +3,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -22,6 +23,38 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.get('/', (req, res)=>{
     res.json({
         message: "Welcome to the Demo Project"
+    });
+});
+
+app.post('/login', (req, res)=>{
+    const User = require('./models/user');
+    const {
+        username,
+        password
+    } = req.body;
+    User.findOne({username}, async (err, user)=>{
+        if (err){
+            res.json(err);
+        }
+        else{
+            if (!user){
+                res.json({message: "Invalid credentials."});
+            }
+            else{
+                if (await bcrypt.compare(password, user.password)){
+                    const token = jwt.sign({
+                        id: user._id
+                    }, process.env.jwt_secret);
+                    res.json({
+                        token,
+                        message: "Logged in"
+                    });
+                }
+                else{
+                    res.json({message: "Invalid credentials."});
+                }
+            }
+        }
     });
 });
 
