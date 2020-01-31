@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+const cors = require("cors");
 const auth = require("./middleware/middleware");
 
 const app = express();
@@ -16,6 +17,7 @@ mongoose.connect(process.env.DB_URI, {
 mongoose.connection.once('open', (err, resp) => console.log("Connected Successfully to MongoDB"));
 
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(cors());
 
 app.get('/', auth, (req, res)=>{
     res.json({
