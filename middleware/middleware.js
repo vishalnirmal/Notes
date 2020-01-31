@@ -2,10 +2,7 @@ const jwt = require('jsonwebtoken');
 
 function auth(req, res, next){
     const token = req.header('x-auth-token');
-    if (!token){
-        res.status(400);
-    }
-    else{
+    if (token){
         jwt.verify(token, process.env.jwt_secret, (err, data)=>{
             if (err){
                 res.json(err);
@@ -17,6 +14,9 @@ function auth(req, res, next){
                 next();
             }
         });
+    }
+    else{
+        res.sendStatus(401);
     }
 }
 

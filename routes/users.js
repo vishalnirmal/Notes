@@ -3,6 +3,7 @@ const User = require('../models/user.js');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const auth = require('../middleware/middleware');
+const salt_rounds = process.env.salt_rounds;
 
 router.get('/', auth, (req, res)=>{
     User.findById(req.user.id, (err, user)=>{
@@ -10,7 +11,7 @@ router.get('/', auth, (req, res)=>{
     });
 });
 
-router.route('/addUser').post(async (req, res)=>{
+router.route('/register').post(async (req, res)=>{
     const {
         firstName,
         lastName,
@@ -21,7 +22,7 @@ router.route('/addUser').post(async (req, res)=>{
         firstName: firstName,
         lastName: lastName,
         username: username,
-        password: await bcrypt.hash(password, 10)
+        password: await bcrypt.hash(password, salt_rounds)
     });
     user.save(err => {
         if (err){
@@ -39,94 +40,32 @@ router.route('/addUser').post(async (req, res)=>{
     });
 });
 
-router.route('/updateUser/:username').post((req, res)=>{
-    const username = req.params.username;
+router.post('/login', (req, res)=>{
     const {
-        old_password, 
-        new_password
+        username,
+        password
     } = req.body;
     User.findOne({username}, async (err, user)=>{
         if (err){
             res.json(err);
         }
         else{
-            if (user){
-                if (await bcrypt.compare(old_password, user.password)){
-                    User.findByIdAndUpdate(user._id, {
-                        password: await bcrypt.hash(new_password, 10)
-                    }, err =>{
-                        if (err){
-                            res.json(err);
-                        }
-                        else{
-                            res.json({
-                                message: "Updated successfully."
-                            });
-                        }
+            if (!user){
+                res.json({message: "Invalid credentials."});
+            }
+            else{
+                if (await bcrypt.compare(password, user.password)){
+                    const token = jwt.sign({
+                        id: user._id
+                    }, process.env.jwt_secret);
+                    res.json({
+                        token,
+                        message: "Logged in"
                     });
                 }
                 else{
-                    res.json({
-                        message: "Password incorrect."
-                    })
+                    res.json({message: "Invalid credentials."});
                 }
-            }
-            else{
-                res.json({
-                    message: "User does not exist"
-                });
-            }
-        }
-    });
-});
-
-router.route("/:username").delete((req, res)=>{
-    User.findOne({username: req.params.username}, async (err, user)=>{
-        if (err){
-            res.json(err);
-        }
-        else{
-            if (user){
-                if (await bcrypt.compare(req.body.password, user.password)){
-                    User.findByIdAndDelete(user._id, err=>{
-                        if (err){
-                            res.json(err);
-                        }
-                        else{
-                            res.json({
-                                message: "User deleted."
-                            });
-                        }
-                    });
-                }
-                else{
-                    res.json({
-                        message: "Password incorrect."
-                    })
-                }
-            }
-            else{
-                res.json({
-                    message: "User does not exist."
-                });
-            }
-        }
-    });
-});
-
-router.route("/:username").get((req, res)=>{
-    User.findOne({username: req.params.username}, (err, user)=>{
-        if (!user){
-            res.status(404).json({
-                message: "User dose not exist."
-            });
-        }
-        else{
-            if (err){
-                res.json(err);
-            }
-            else{
-                res.json(user);
             }
         }
     });
