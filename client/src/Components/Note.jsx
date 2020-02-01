@@ -10,7 +10,7 @@ export default function Note(props){
                 <h3 className="title">{props.title}</h3>
                 <p className="message">{props.message}</p>
                 <div className="mt-1 text-right">
-                    <i class="fas fa-trash-alt size-5x button" onClick={removeNote}></i>
+                    <i className="fas fa-trash-alt size-5x button" onClick={removeNote}></i>
                 </div>
             </div>
         </div>

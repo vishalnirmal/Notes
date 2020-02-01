@@ -43,9 +43,9 @@ export default function Register(props){
     }
 
     return (
-        <div class="register">
+        <div className="register">
         <Navigation/>
-        <div class="row justify-content-center">
+        <div className="row justify-content-center">
         
         <div className="form-register col-lg-3 col-md-5 col-7">
         <p className="form-heading">Sign Up</p>

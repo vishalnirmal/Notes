@@ -17,11 +17,10 @@ export default function Home(props){
             setNotes(resp.data);
         });
     }
-    if (!token){
-        props.history.push('/signin');
-    }
-    
     useEffect(()=>{
+        if (!token){
+            props.history.push('/signin');
+        }
         fetchNotes();
     });
 

@@ -38,7 +38,7 @@ export default function CreateNote(props){
                         {
                             isClicked &&
                             <div className="mt-2 text-right">
-                                <i onClick={onSubmit} class="fas fa-plus-circle button"></i>
+                                <i onClick={onSubmit} className="fas fa-plus-circle button"></i>
                             </div>
                         }
                     </form>

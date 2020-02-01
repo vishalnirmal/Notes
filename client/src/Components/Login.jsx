@@ -43,7 +43,7 @@ export default function Login(props){
     }
 
     return (
-        <div class="login">
+        <div className="login">
     <Navigation />
     <div className="row justify-content-center m-0">
     <div className="form col-lg-3 col-md-5 col-7">

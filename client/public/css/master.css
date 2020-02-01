@@ -4,7 +4,7 @@ body{
 }
 
 .home, .login, .register{
-    margin-top: 6rem;
+    margin: 6rem 0 3rem;
 }
 
 .header{
