@@ -22,8 +22,8 @@ router.post('/addNote', auth, (req, res)=>{
     });
 });
 
-router.delete('/deleteNote/:note_id', auth, (req, res)=>{
-    Note.findByIdAndDelete(req.params.note_id, (err, notes)=>{
+router.delete('/deleteNote', auth, (req, res)=>{
+    Note.findByIdAndDelete(req.body.id, (err, notes)=>{
         if (err){
             res.json(err);
         }

@@ -22,7 +22,7 @@ router.route('/register').post(async (req, res)=>{
         firstName: firstName,
         lastName: lastName,
         username: username,
-        password: await bcrypt.hash(password, salt_rounds)
+        password: await bcrypt.hash(password, 10)
     });
     user.save(err => {
         if (err){

@@ -17,6 +17,7 @@ mongoose.connect(process.env.DB_URI, {
 mongoose.connection.once('open', (err, resp) => console.log("Connected Successfully to MongoDB"));
 
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
 app.use(cors());
 
 app.get('/', auth, (req, res)=>{
