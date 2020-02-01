@@ -15,12 +15,14 @@ export default function CreateNote(props){
         });
     }
     function onSubmit(event){
-        event.preventDefault();
-        props.onAdd(note);
-        setNote({
-            title:"",
-            message:""
-        });
+        if (!(note.message === '')){
+            event.preventDefault();
+            props.onAdd(note);
+            setNote({
+                title:"",
+                message:""
+            });
+        }
     }
     return (
         <div className="create-note">
