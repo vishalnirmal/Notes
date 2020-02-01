@@ -16,14 +16,13 @@ mongoose.connect(process.env.DB_URI, {
 });
 mongoose.connection.once('open', (err, resp) => console.log("Connected Successfully to MongoDB"));
 
+app.use(express.static('build'));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(cors());
 
 app.get('/', auth, (req, res)=>{
-    res.json({
-        message: "Welcome to the Demo Project"
-    });
+    res.sendFile('index.html');
 });
 
 
