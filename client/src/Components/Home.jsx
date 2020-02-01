@@ -55,10 +55,10 @@ export default function Home(props){
     }
 
     return (
-        <div>
+        <div className="home">
             <Navigation loggedIn={true}/>
             <CreateNote onAdd={addNote}/>
-            <div className="row">
+            <div className="row m-0">
             {notes.map((noteItem, index) => {
                 return (
                         <Note

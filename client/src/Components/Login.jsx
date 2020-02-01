@@ -8,6 +8,7 @@ export default function Login(props){
         password: ""
     });
     const [isChecked, setChecked] = React.useState(false);
+    const [msg, setMsg] = React.useState("");
     function handleChange(event){
         const { name, value } = event.target;
 
@@ -22,14 +23,19 @@ export default function Login(props){
     function submitCredentials(event){
         event.preventDefault();
         axios.post('/user/login', user).then(resp => {
-            if (resp.status !== 200){
-                props.history.push('/login');
+            if (!resp.data.token){
+                props.history.push('/signin');
+                setMsg(resp.data.message);
             }
             else{
                 localStorage.setItem('jwt-token', resp.data.token);
                 props.history.push('/');
             }   
-        })
+        });
+        setUser({
+            username: "",
+            password: ""
+        });
     }
     
     if (localStorage.getItem('jwt-token')){
@@ -37,28 +43,29 @@ export default function Login(props){
     }
 
     return (
-        <div>
+        <div class="login">
     <Navigation />
-    <div className="form">
+    <div className="row justify-content-center m-0">
+    <div className="form col-lg-3 col-md-5 col-7">
         <p className="form-heading">Sign In</p>
         <form onSubmit={submitCredentials}>
-            <div className="form-group">
-                <input type="text" name="username" value={user.username} placeholder="Username" className="form-control" onChange={handleChange} required/>
-            </div>
-            <div className="form-group">
-                <input type={isChecked?"text":"password"} name="password" value={user.password} placeholder="Password" className="form-control" onChange={handleChange} required/>
-            </div>
-            <div className="form-group chkbx">
+            {
+                !(msg==='') && <label className="form-control error">{msg}</label>
+            }
+            <input type="text" name="username" value={user.username} placeholder="Username" className="form-control" onChange={handleChange} required/>
+            <input type={isChecked?"text":"password"} name="password" value={user.password} placeholder="Password" className="form-control" onChange={handleChange} required/>    
+            <div className="chkbx">
                 <input type="checkbox" onClick={_=>setChecked(!isChecked)} className="form-check-input"/>
                 <label className="form-check-lable">Show Password</label>
             </div>
-            <div className="from-group text-center">
+            <div className="from-group text-center mt-1">
                 <button className="btn btn-lg btn-outline-dark" type="submit">Sign In</button>
             </div>
-            <div className="text-center">
+            <div className="text-center mt-1">
                 <a href="/signup">Create a new account.</a>
             </div>
         </form>
+    </div>
     </div>
     </div>);
 }

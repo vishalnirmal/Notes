@@ -3,6 +3,7 @@ import { Switch, Route } from 'react-router-dom';
 import Login from './Login';
 import Register from './Register';
 import Home from "./Home";
+import Footer from './Footer';
 
 function App() {
     return (
@@ -12,6 +13,7 @@ function App() {
                 <Route path="/signup" component={Register}/>
                 <Route path="/signin" component={Login}/>
             </Switch>
+            <Footer/>
         </div>
     );
 }

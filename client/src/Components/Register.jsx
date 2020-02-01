@@ -33,38 +33,46 @@ export default function Register(props){
                 localStorage.setItem('jwt-token', resp.data.token);
                 props.history.push('/');
             }   
-        })
+        });
+        setUser({
+            username: "",
+            password: "",
+            firstName: "",
+            lastName: ""
+        });
     }
 
     return (
-        <div>
+        <div class="register">
         <Navigation/>
-    <div className="form-register">
+        <div class="row justify-content-center">
+        
+        <div className="form-register col-lg-3 col-md-5 col-7">
         <p className="form-heading">Sign Up</p>
         <form>
-            <div className="form-group">
+            
                 <input type="text" name="firstName" value={user.firstName} placeholder="First Name" className="form-control" onChange={handleChange} required/>
-            </div>  
-            <div className="form-group">
+            
+            
                 <input type="text" name="lastName" value={user.lastName} placeholder="Last Name" className="form-control" onChange={handleChange}/>
-            </div>  
-            <div className="form-group">
+            
+            
                 <input type="text" name="username" value={user.username} placeholder="Username" className="form-control" onChange={handleChange} required/>
-            </div>
-            <div className="form-group">
+            
+            
                 <input name="password" type={isChecked? "text" : "password"} value={user.password} placeholder="Password" className="form-control" onChange={handleChange} required/>
-            </div>
-            <div className="form-group chkbx">
+            <div className="chkbx">
                 <input type="checkbox" onClick={_=>setChecked(!isChecked)} className="form-check-input"/>
                 <label className="form-check-lable">Show Password</label>
             </div>
-            <div className="form-group text-center">
+            <div className="text-center">
                 <button onClick={submitCredentials} className="btn btn-lg btn-outline-dark">Sign Up</button>
             </div>
-            <div className=" text-center">
+            <div className="text-center m-0 mt-1">
                 <a href="/signin">Already have an account?</a>
             </div>
         </form>
+    </div>
     </div>
     </div>
     );

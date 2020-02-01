@@ -5,6 +5,7 @@ export default function CreateNote(props){
         title: "",
         message: ""
     });
+    const [isClicked, setClicked] = React.useState(false);
     function handleChange(event){
         const {name, value} = event.target;
         setNote(note=>{
@@ -22,21 +23,26 @@ export default function CreateNote(props){
                 title:"",
                 message:""
             });
+            setClicked(false);
         }
     }
     return (
-        <div className="create-note">
-            <form>
-                <div className="form-group">
-                    <input type="text" name="title" className="form-control" value={note.title} placeholder="Title" onChange={handleChange} />
+        <div className="row justify-content-center m-0">
+                <div className="col-lg-4 col-md-6 col-11 m-0 create-note">
+                    <form>
+                        {
+                            isClicked && 
+                            <input type="text" name="title" className="form-control" value={note.title} placeholder="Title" onChange={handleChange} />
+                        }
+                        <textarea name="message" rows={isClicked?"4":"1"} className="form-control" value={note.message} onChange={handleChange} onClick={()=>{setClicked(true);}} placeholder="Your Note" required/>
+                        {
+                            isClicked &&
+                            <div className="mt-2 text-right">
+                                <i onClick={onSubmit} class="fas fa-plus-circle button"></i>
+                            </div>
+                        }
+                    </form>
                 </div>
-                <div className="form-group">
-                    <textarea name="message" rows="2" className="form-control" value={note.message} onChange={handleChange} placeholder="Your Note" required/>
-                </div>
-                <div className="text-right">
-                    <button className="text-right button" type="submit" onClick={onSubmit}>Add</button>
-                </div>
-            </form>
         </div>
     );
 }
