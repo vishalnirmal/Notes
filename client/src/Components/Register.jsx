@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import Navigation from './navigation';
+import {Link} from 'react-router-dom';
 
 export default function Register(props){
     const [user, setUser] = React.useState({
@@ -69,7 +70,7 @@ export default function Register(props){
                 <button onClick={submitCredentials} className="btn btn-lg btn-outline-dark">Sign Up</button>
             </div>
             <div className="text-center m-0 mt-1">
-                <a href="/signin">Already have an account?</a>
+                <Link to="/signin">Already have an account?</Link>
             </div>
         </form>
     </div>
