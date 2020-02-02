@@ -25,7 +25,7 @@ export default function Login(props){
         event.preventDefault();
         axios.post('/user/login', user).then(resp => {
             if (!resp.data.token){
-                props.history.push('/signin');
+                props.history.push('/signin');                
                 setMsg(resp.data.message);
             }
             else{

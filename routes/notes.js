@@ -14,10 +14,12 @@ router.post('/addNote', auth, (req, res)=>{
     });
     note.save(err=>{
         if (err){
-            res.json(err);
+            res.status(400).json(err);
         }
         else{
-            res.sendStatus(200);
+            res.json({
+                message: "Saved"
+            });
         }
     });
 });
@@ -25,16 +27,18 @@ router.post('/addNote', auth, (req, res)=>{
 router.delete('/deleteNote', auth, (req, res)=>{
     Note.findByIdAndDelete(req.body.id, (err, notes)=>{
         if (err){
-            res.json(err);
+            res.status(400).json(err);
         }
         else{
-            res.sendStatus(200);
+            res.json({
+                message: "Deleted"
+            });
         }
     });
 });
 
 router.get('/allNotes', auth, (req, res)=>{
-    Note.find({user_id: req.user.id}, (err, notes)=>{
+    Note.find({user_id: req.user.id}, (err, notes)=>{ 
         res.json(notes);
     });
 });

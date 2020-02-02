@@ -24,18 +24,32 @@ router.route('/register').post(async (req, res)=>{
         username: username,
         password: await bcrypt.hash(password, 10)
     });
-    user.save(err => {
+    User.findOne({username}, (err, usr)=>{
         if (err){
-            res.json(err);
+            res.json({err});
         }
         else{
-            const token = jwt.sign({
-                id: user.id,
-            }, process.env.jwt_secret);
-            res.status(200).json({
-                message: "User Saved successfully",
-                token
-            });
+            if (usr){
+                res.json({
+                    message: "User already exist."
+                });
+            }
+            else{
+                user.save(err => {
+                    if (err){
+                        res.res.json(err);
+                    }
+                    else{
+                        const token = jwt.sign({
+                            id: user.id,
+                        }, process.env.jwt_secret);
+                        res.json({
+                            message: "User Saved successfully",
+                            token
+                        });
+                    }
+                });
+            }
         }
     });
 });
@@ -70,6 +84,5 @@ router.post('/login', (req, res)=>{
         }
     });
 });
-
 
 module.exports = router;

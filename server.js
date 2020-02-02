@@ -25,8 +25,6 @@ app.get('/', auth, (req, res)=>{
     res.sendFile('index.html');
 });
 
-
-
 const userRoutes = require("./routes/users");
 app.use('/user', userRoutes);
 
