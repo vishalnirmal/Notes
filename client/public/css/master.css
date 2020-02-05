@@ -3,7 +3,7 @@ body{
     margin: 0;
 }
 
-.home, .login, .register{
+.body{
     margin: 6rem 0 3rem;
 }
 
@@ -118,4 +118,18 @@ input{
     color: #b4a6a6;
     /* position: absolute;
     bottom: 0; */
+}
+
+.error-div{
+    width: 40%;
+    margin: auto;
+    text-align: center;
+}
+
+.error-heading{
+    font-size: 9rem;
+}
+
+.error-message{
+    font-size: 1.5rem;
 }

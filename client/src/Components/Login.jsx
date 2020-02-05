@@ -44,7 +44,7 @@ export default function Login(props){
     }
 
     return (
-        <div className="login">
+        <div className="body">
     <Navigation />
     <div className="row justify-content-center m-0">
     <div className="form col-lg-3 col-md-5 col-7">
@@ -56,8 +56,8 @@ export default function Login(props){
             <input type="text" name="username" value={user.username} placeholder="Username" className="form-control" onChange={handleChange} required/>
             <input type={isChecked?"text":"password"} name="password" value={user.password} placeholder="Password" className="form-control" onChange={handleChange} required/>    
             <div className="chkbx">
-                <input type="checkbox" onClick={_=>setChecked(!isChecked)} className="form-check-input"/>
-                <label className="form-check-lable">Show Password</label>
+                <input type="checkbox" onChange={_=>setChecked(!isChecked)} checked={isChecked} className="form-check-input"/>
+                <label className="form-check-lable" onClick={_=>setChecked(!isChecked)}>Show Password</label>
             </div>
             <div className="from-group text-center mt-1">
                 <button className="btn btn-lg btn-outline-dark" type="submit">Sign In</button>

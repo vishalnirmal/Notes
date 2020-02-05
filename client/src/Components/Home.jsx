@@ -54,7 +54,7 @@ export default function Home(props){
     }
 
     return (
-        <div className="home">
+        <div className="body">
             <Navigation loggedIn={true}/>
             <CreateNote onAdd={addNote}/>
             <div className="row m-0">

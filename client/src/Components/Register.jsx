@@ -48,7 +48,7 @@ export default function Register(props){
     }
 
     return (
-        <div className="register">
+        <div className="body">
         <Navigation/>
         <div className="row justify-content-center">
         
@@ -63,8 +63,8 @@ export default function Register(props){
             <input type="text" name="username" value={user.username} placeholder="Username" className="form-control" onChange={handleChange} required/>
             <input name="password" type={isChecked? "text" : "password"} value={user.password} placeholder="Password" className="form-control" onChange={handleChange} required/>
             <div className="chkbx">
-                <input type="checkbox" onClick={_=>setChecked(!isChecked)} className="form-check-input"/>
-                <label className="form-check-lable">Show Password</label>
+                <input type="checkbox" onChange={_=>setChecked(!isChecked)} checked={isChecked} className="form-check-input"/>
+                <label className="form-check-lable" onClick={_=>setChecked(!isChecked)}>Show Password</label>
             </div>
             <div className="text-center">
                 <button type="submit" className="btn btn-lg btn-outline-dark">Sign Up</button>
