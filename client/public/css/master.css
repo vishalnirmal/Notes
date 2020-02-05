@@ -102,6 +102,7 @@ input{
 
 .message{
     font-family: 'Inconsolata', monospace;
+    white-space: pre-line;
 }
 
 .error{

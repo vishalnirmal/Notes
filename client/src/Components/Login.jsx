@@ -49,7 +49,7 @@ export default function Login(props){
     <div className="row justify-content-center m-0">
     <div className="form col-lg-3 col-md-5 col-7">
         <p className="form-heading">Sign In</p>
-        <form onSubmit={submitCredentials}>
+        <form onSubmit={submitCredentials} autoComplete="off">
             {
                 !(msg==='') && <label className="form-control error">{msg}</label>
             }

@@ -27,24 +27,22 @@ export default function Register(props){
 
     function submitCredentials(event){
         event.preventDefault();
-        // if (user.firstName !== '' && user.username !== '' && user.password !== ''){
-            axios.post('/user/register', user).then(resp => {
-                if (!resp.data.token){
-                    setMsg(resp.data.message);
-                    props.history.push('/signup');
-                }
-                else{
-                    localStorage.setItem('jwt-token', resp.data.token);
-                    props.history.push('/');
-                }   
-            });
-            setUser({
-                username: "",
-                password: "",
-                firstName: "",
-                lastName: ""
-            });
-        // }
+        axios.post('/user/register', user).then(resp => {
+            if (!resp.data.token){
+                setMsg(resp.data.message);
+                props.history.push('/signup');
+            }
+            else{
+                localStorage.setItem('jwt-token', resp.data.token);
+                props.history.push('/');
+            }   
+        });
+        setUser({
+            username: "",
+            password: "",
+            firstName: "",
+            lastName: ""
+        });
     }
 
     return (
@@ -54,7 +52,7 @@ export default function Register(props){
         
         <div className="form-register col-lg-3 col-md-5 col-7">
         <p className="form-heading">Sign Up</p>
-        <form onSubmit={submitCredentials}>
+        <form onSubmit={submitCredentials} autoComplete="off">
             {
                 !(msg==='') && <label className="form-control error">{msg}</label>
             }
