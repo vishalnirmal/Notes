@@ -66,6 +66,7 @@ export default function Home(props){
                         title={noteItem.title}
                         message={noteItem.message}
                         onDelete={deleteNote}
+                        created_at={noteItem.created_at}
                         />
                 );
               })}
