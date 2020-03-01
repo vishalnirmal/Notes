@@ -2,13 +2,20 @@ import React from 'react';
 import CreateNote from './createNote';
 import Note from './Note';
 import axios from 'axios';
-import { useEffect } from 'react';
 import Navigation from './navigation';
 
 export default function Home(props){
     const [notes, setNotes] = React.useState([]);
     const token = localStorage.getItem('jwt-token');
+    React.useState(_=>{
+        if (!token){
+            props.history.push('/signin');
+        }
+        fetchNotes();
+    });
     function fetchNotes(){
+        console.log("called");
+        
         axios.get('/note/allNotes', {
             headers: {
                 "x-auth-token": token
@@ -17,12 +24,6 @@ export default function Home(props){
             setNotes(resp.data);
         });
     }
-    useEffect(()=>{
-        if (!token){
-            props.history.push('/signin');
-        }
-        fetchNotes();
-    });
 
     function addNote(note){
         axios({
@@ -35,7 +36,6 @@ export default function Home(props){
           }).then(resp=>{
           });
           fetchNotes();
-
     }
 
     function deleteNote(id){

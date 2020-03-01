@@ -64,6 +64,7 @@ export default function Login(props){
             </div>
             <div className="text-center mt-1">
                 <Link to="/signup">Create a new account.</Link>
+                <Link to="/forgot_password">Forgot Password?</Link>
             </div>
         </form>
     </div>

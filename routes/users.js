@@ -5,6 +5,12 @@ const bcrypt = require('bcrypt');
 const auth = require('../middleware/middleware');
 const salt_rounds = process.env.salt_rounds;
 
+router.post('/forgot_password', (req, res)=>{
+    res.json(status=404, { 
+            msg: "hello"
+    });
+});
+
 router.get('/', auth, (req, res)=>{
     User.findById(req.user.id, (err, user)=>{
         res.json(user);

@@ -5,6 +5,7 @@ import Register from './Register';
 import Home from "./Home";
 import Footer from './Footer';
 import Error404 from './Error404';
+import ForgotPassword from './forgotPassword';
 
 function App() {
     return (
@@ -13,6 +14,7 @@ function App() {
                 <Route path="/" exact component={Home}/>
                 <Route path="/signup" component={Register}/>
                 <Route path="/signin" component={Login}/>
+                <Route path="/forgot_password" component={ForgotPassword}/>
                 <Route path="" component={Error404}/>
             </Switch>
             <Footer/>
