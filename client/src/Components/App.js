@@ -6,6 +6,7 @@ import Home from "./Home";
 import Footer from './Footer';
 import Error404 from './Error404';
 import ForgotPassword from './forgotPassword';
+import ResetPassword from './ResetPassword';
 
 function App() {
     return (
@@ -15,6 +16,7 @@ function App() {
                 <Route path="/signup" component={Register}/>
                 <Route path="/signin" component={Login}/>
                 <Route path="/forgot_password" component={ForgotPassword}/>
+                <Route path="/reset_password/:key" component={ResetPassword}/>
                 <Route path="" component={Error404}/>
             </Switch>
             <Footer/>

@@ -4,10 +4,62 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const auth = require('../middleware/middleware');
 const salt_rounds = process.env.salt_rounds;
+const nodemailer = require('nodemailer');
+const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: process.env.email,
+      pass: process.env.email_pass
+    }
+  });
 
 router.post('/forgot_password', (req, res)=>{
-    res.json(status=404, { 
-            msg: "hello"
+    const {
+        username, 
+        email
+    } = req.body;
+    User.findOne({
+        username: username,
+        email: email
+    }, (err, user)=>{
+        if (!err){
+            if (!user){
+                res.json({
+                    message: "No user exist with the following details."
+                });
+            }
+            else{
+                const token = jwt.sign({id: user._id}, process.env.jwt_secret);
+                const link = process.env.link+'/reset_password/'+token;
+                transporter.sendMail({
+                    from: "handynotes.service@gmail.com",
+                    to: user.email,
+                    subject: "Password Reset",
+                    html: "<h1>Change Password</h1><br><br><h3>To reset your password, <a href="+link+">Click here</a>.</h3>"
+                });
+                res.sendStatus(200);
+            }
+        }
+        else{
+            res.json(err);
+        }
+    });
+});
+
+router.post('/reset_password', auth, (req, res)=>{
+    User.findById(req.user.id, async (err, user)=>{
+        if (!err){
+            const npassword = req.body.password;
+            const hpass = await bcrypt.hash(npassword, 10);
+            user.password = hpass;
+            user.save();
+            res.sendStatus(200);
+        }
+        else{
+            res.json({
+                message: err
+            });
+        }
     });
 });
 
@@ -22,12 +74,15 @@ router.route('/register').post(async (req, res)=>{
         firstName,
         lastName,
         username,
-        password
+        password,
+        email
     } = req.body;
+
     const user = User({
         firstName: firstName,
         lastName: lastName,
         username: username,
+        email: email,
         password: await bcrypt.hash(password, 10)
     });
     User.findOne({username}, (err, usr)=>{
@@ -43,7 +98,7 @@ router.route('/register').post(async (req, res)=>{
             else{
                 user.save(err => {
                     if (err){
-                        res.res.json(err);
+                        res.json(err);
                     }
                     else{
                         const token = jwt.sign({

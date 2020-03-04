@@ -25,6 +25,18 @@ app.get('/', auth, (req, res)=>{
     res.sendFile('index.html');
 });
 
+app.get('/signin', (req, res)=>{
+    res.sendFile('index.html');
+});
+
+app.get('/signup', (req, res)=>{
+    res.sendFile('index.html');
+});
+
+app.get('/forgot_password', (req, res)=>{
+    res.sendFile('index.html');
+});
+
 const userRoutes = require("./routes/users");
 app.use('/user', userRoutes);
 

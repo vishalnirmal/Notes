@@ -26,6 +26,10 @@ body{
     text-decoration: none;
 }
 
+.show:hover{
+    cursor: pointer;
+}
+
 .form{
     padding: 0.8rem;
     border: solid #3a3535 1px;

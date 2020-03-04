@@ -8,6 +8,7 @@ export default function ForgotPassword(props){
         email: ""
     });
     const [msg, setMsg] = React.useState("");
+    const [success, setSuccess] = React.useState(false);
     function changeDetails(event){
         const { name, value } = event.target;
         setDetails(details=>{
@@ -23,12 +24,12 @@ export default function ForgotPassword(props){
             url: 'user/forgot_password',
             data: details,
           }).then(resp=>{
-              console.log(resp);
-            //   if (resp.status === 200){
-            //   }
-            //   else{
-            //       setMsg("Sorry, didn't find any account matching entered details");
-            //   }
+              if (resp.data.message){
+                  setMsg(resp.data.message);
+              }
+              else{
+                setSuccess(true);
+              }
           }).catch(err =>{
             console.log(err);
           });
@@ -39,21 +40,24 @@ export default function ForgotPassword(props){
         event.preventDefault();
     }
     return (
-        <div class="body">
+        <div className="body">
             <Navigation/>
             <div className="row justify-content-center m-0">
                 <div className="form col-lg-3 col-md-5 col-7">
-                    <form onSubmit={submitDetails}>
-                        {
-                            !(msg==='') && <label className="form-control error">{msg}</label>
-                        }
-                        <h4 class="text-center mb-4">Forgot Password</h4>
-                        <input name="username" type="text" class="form-control" onChange={changeDetails} value={details.username} placeholder="Username" required/>
-                        <input name="email" type="text" class="form-control" onChange={changeDetails} value={details.email} placeholder="Email" required/>
-                        <div class="text-center mt-3">
-                            <button class="btn btn-lg btn-dark">Submit</button>
-                        </div>
-                    </form>
+                    <h4 className="text-center mb-4">{!success?"Forgot Password":"Link successfully mailed"}</h4>
+                    {
+                        !(msg==='') && <label className="form-control error">{msg}</label>
+                    }
+                    {
+                        !success && 
+                        <form onSubmit={submitDetails}>
+                            <input name="username" type="text" className="form-control" onChange={changeDetails} value={details.username} placeholder="Username" required/>
+                            <input name="email" type="text" className="form-control" onChange={changeDetails} value={details.email} placeholder="Email" required/>
+                            <div className="text-center mt-3">
+                                <button className="btn btn-lg btn-dark">Submit</button>
+                            </div>
+                        </form>
+                    }
                 </div>
             </div>
         </div>

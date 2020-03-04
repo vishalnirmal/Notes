@@ -56,15 +56,19 @@ export default function Login(props){
             <input type="text" name="username" value={user.username} placeholder="Username" className="form-control" onChange={handleChange} required/>
             <input type={isChecked?"text":"password"} name="password" value={user.password} placeholder="Password" className="form-control" onChange={handleChange} required/>    
             <div className="chkbx">
-                <input type="checkbox" onChange={_=>setChecked(!isChecked)} checked={isChecked} className="form-check-input"/>
-                <label className="form-check-lable" onClick={_=>setChecked(!isChecked)}>Show Password</label>
+                <input type="checkbox" onChange={_=>setChecked(!isChecked)} checked={isChecked} className="form-check-input show"/>
+                <label className="form-check-lable show" onClick={_=>setChecked(!isChecked)}>Show Password</label>
             </div>
             <div className="from-group text-center mt-1">
                 <button className="btn btn-lg btn-outline-dark" type="submit">Sign In</button>
             </div>
-            <div className="text-center mt-1">
-                <Link to="/signup">Create a new account.</Link>
-                <Link to="/forgot_password">Forgot Password?</Link>
+            <div className="text-center mt-1 row">
+                <div class="col-6">
+                    <Link to="/forgot_password"><small>Forgot Password?</small></Link>
+                </div>
+                <div class="col-6">
+                    <Link to="/signup"><small className="form-text">Sign Up</small></Link>    
+                </div>
             </div>
         </form>
     </div>

@@ -13,9 +13,7 @@ export default function Home(props){
         }
         fetchNotes();
     });
-    function fetchNotes(){
-        console.log("called");
-        
+    function fetchNotes(){        
         axios.get('/note/allNotes', {
             headers: {
                 "x-auth-token": token
