@@ -21,26 +21,14 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(cors());
 
-app.get('/', auth, (req, res)=>{
-    res.sendFile('index.html');
-});
-
-app.get('/signin', (req, res)=>{
-    res.sendFile('index.html');
-});
-
-app.get('/signup', (req, res)=>{
-    res.sendFile('index.html');
-});
-
-app.get('/forgot_password', (req, res)=>{
-    res.sendFile('index.html');
-});
-
 const userRoutes = require("./routes/users");
 app.use('/user', userRoutes);
 
 const noteRoutes = require("./routes/notes");
 app.use('/note', noteRoutes);
+
+app.get('*', (req, res)=>{
+    res.sendFile(__dirname+'/build/index.html');
+});
 
 app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));

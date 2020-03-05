@@ -1,6 +1,7 @@
 import React from "react";
 import Navigation from "./navigation";
 import axios from "axios";
+import {Link} from "react-router-dom";
 
 export default function ForgotPassword(props){
     const [details, setDetails] = React.useState({
@@ -55,6 +56,14 @@ export default function ForgotPassword(props){
                             <input name="email" type="text" className="form-control" onChange={changeDetails} value={details.email} placeholder="Email" required/>
                             <div className="text-center mt-3">
                                 <button className="btn btn-lg btn-dark">Submit</button>
+                            </div>
+                            <div className="text-center mt-1 row">
+                                <div class="col-6">
+                                    <Link to="/signin"><small>Sign In</small></Link>
+                                </div>
+                                <div class="col-6">
+                                    <Link to="/signup"><small className="form-text">Sign Up</small></Link>    
+                                </div>
                             </div>
                         </form>
                     }
