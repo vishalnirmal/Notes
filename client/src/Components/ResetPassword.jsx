@@ -18,8 +18,7 @@ export default function ResetPassword(props){
         });
     }
     function submitDetails(event){
-        console.log(props.match.params.key);
-        
+        setMsg("");
         if (details.password === details.tpassword){
             axios({
                 method: "POST",
@@ -48,7 +47,7 @@ export default function ResetPassword(props){
             <Navigation/>
             <div className="row justify-content-center m-0">
                 <div className="form col-lg-3 col-md-5 col-7">
-                    <h4 className="text-center mb-4">Reset Password</h4>
+                    <p className="form-heading">Reset Password</p>
                     {
                         !(msg==='') && <label className="form-control error">{msg}</label>
                     }

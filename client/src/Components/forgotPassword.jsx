@@ -20,6 +20,7 @@ export default function ForgotPassword(props){
         });
     }
     function submitDetails(event){
+        setMsg("");
         axios({
             method: 'post',
             url: 'user/forgot_password',
@@ -45,7 +46,7 @@ export default function ForgotPassword(props){
             <Navigation/>
             <div className="row justify-content-center m-0">
                 <div className="form col-lg-3 col-md-5 col-7">
-                    <h4 className="text-center mb-4">{!success?"Forgot Password":"Link successfully mailed"}</h4>
+                    <p className="form-heading">{!success?"Forgot Password":"Link successfully mailed"}</p>
                     {
                         !(msg==='') && <label className="form-control error">{msg}</label>
                     }

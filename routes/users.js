@@ -69,7 +69,7 @@ router.get('/', auth, (req, res)=>{
     });
 });
 
-router.route('/register').post(async (req, res)=>{
+router.post('/verify', async (req, res)=>{
     const {
         firstName,
         lastName,
@@ -77,14 +77,13 @@ router.route('/register').post(async (req, res)=>{
         password,
         email
     } = req.body;
-
-    const user = User({
+    const user = {
         firstName: firstName,
         lastName: lastName,
         username: username,
         email: email,
         password: await bcrypt.hash(password, 10)
-    });
+    };
     User.findOne({username}, (err, usr)=>{
         if (err){
             res.json({err});
@@ -92,25 +91,61 @@ router.route('/register').post(async (req, res)=>{
         else{
             if (usr){
                 res.json({
-                    message: "User already exist."
+                    message: "Username already taken."
                 });
             }
             else{
-                user.save(err => {
+                User.findOne({email}, (err, usr1)=>{
                     if (err){
-                        res.json(err);
+                        res.json({err});
                     }
                     else{
-                        const token = jwt.sign({
-                            id: user.id,
-                        }, process.env.jwt_secret);
-                        res.json({
-                            message: "User Saved successfully",
-                            token
-                        });
+                        if (usr1){
+                            res.json({
+                                message: "Email Address taken"
+                            });
+                        }
+                        else{
+                            const token = jwt.sign(user, process.env.jwt_secret);
+                            const link = process.env.link + '/verify/' + token;
+                            transporter.sendMail({
+                                from: 'handynotes.service@gmail.com',
+                                to: user.email,
+                                subject: 'Verification of Notes Account.',
+                                html: '<h1>Verify Your Account</h1><br><br><h3>To verify your account, <a href='+link+'>Click here</a>.</h3>'
+                            });
+                            res.sendStatus(200);
+                        }
                     }
                 });
             }
+        }
+    });
+});
+
+
+router.route('/register').post(async (req, res)=>{
+    const {
+        token, 
+        password
+    } = req.body;
+
+    jwt.verify(token, process.env.jwt_secret, async (err, data)=>{
+        if (await bcrypt.compare(password, data.password)){
+            const user = new User(data);
+            user.save(err => {
+                if (err){
+                    res.json(err);
+                }
+                else{
+                    res.sendStatus(200);
+                }
+            });
+        }
+        else{
+            res.json({
+                message: "Password did not match"
+            });
         }
     });
 });

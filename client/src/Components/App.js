@@ -7,6 +7,7 @@ import Footer from './Footer';
 import Error404 from './Error404';
 import ForgotPassword from './forgotPassword';
 import ResetPassword from './ResetPassword';
+import Verify from './Verify';
 
 function App() {
     return (
@@ -17,6 +18,7 @@ function App() {
                 <Route path="/signin" component={Login}/>
                 <Route path="/forgot_password" component={ForgotPassword}/>
                 <Route path="/reset_password/:key" component={ResetPassword}/>
+                <Route path="/verify/:key" component={Verify}/>
                 <Route path="" component={Error404}/>
             </Switch>
             <Footer/>
