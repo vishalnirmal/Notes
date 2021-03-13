@@ -29,14 +29,19 @@ export default function Register(props){
     function submitCredentials(event){
         setMsg("");
         event.preventDefault();
-        axios.post('/user/verify', user).then(resp => {
-            if (!resp.data.message){
-                setClicked(true);
-            }
-            else{
-                setMsg(resp.data.message);
-            } 
-        });
+        if (user.username.length < 8 || user.password.length < 8){
+            setMsg("Length of username and password should be greater than 8.");
+        }
+        else{
+            axios.post('/user/verify', user).then(resp => {
+                if (!resp.data.message){
+                    setClicked(true);
+                }
+                else{
+                    setMsg(resp.data.message);
+                } 
+            });
+        }
         setUser({
             username: "",
             email: "",
@@ -53,13 +58,13 @@ export default function Register(props){
         
         <div className="form-register col-lg-3 col-md-5 col-7">
         <p className="form-heading">{
-            isClicked? "A verification link has been sent to your email address":"Sig Up"
+            isClicked? "A verification link has been sent to your email address":"Sign Up"
         }</p>
         {
             !isClicked && 
             <form onSubmit={submitCredentials} autoComplete="off">
                 {
-                    !(msg==='') && <label className="form-control error">{msg}</label>
+                    !(msg==='') && <label className="form-control h-100 error">{msg}</label>
                 }
                 <input type="text" name="firstName" value={user.firstName} placeholder="First Name" className="form-control" onChange={handleChange} required/>
                 <input type="text" name="lastName" value={user.lastName} placeholder="Last Name" className="form-control" onChange={handleChange}/>
