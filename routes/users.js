@@ -4,14 +4,8 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const auth = require('../middleware/middleware');
 const salt_rounds = process.env.salt_rounds;
-const nodemailer = require('nodemailer');
-const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: process.env.email,
-      pass: process.env.email_pass
-    }
-  });
+const sgMail = require('@sendgrid/mail');
+sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
 router.post('/forgot_password', (req, res)=>{
     const {
@@ -31,13 +25,21 @@ router.post('/forgot_password', (req, res)=>{
             else{
                 const token = jwt.sign({id: user._id}, process.env.jwt_secret);
                 const link = process.env.link+'/reset_password/'+token;
-                transporter.sendMail({
-                    from: "handynotes.service@gmail.com",
-                    to: user.email,
-                    subject: "Password Reset",
-                    html: "<h1>Change Password</h1><br><br><h3>To reset your password, <a href="+link+">Click here</a>.</h3>"
-                });
-                res.sendStatus(200);
+                const msg = {
+                    to: user.email, // Change to your recipient
+                    from: process.env.email, // Change to your verified sender
+                    subject: 'Password Reset',
+                    text: 'Change your HandyNotes account password.',
+                    html: '<h1>Change Password</h1><br><br><h3>To reset your password, <a href='+link+'>Click here</a>.</h3>',
+                  }
+                  sgMail
+                    .send(msg)
+                    .then(() => {
+                        res.sendStatus(200);
+                    })
+                    .catch((error) => {
+                      console.error(error)
+                    });
             }
         }
         else{
@@ -108,13 +110,21 @@ router.post('/verify', async (req, res)=>{
                         else{
                             const token = jwt.sign(user, process.env.jwt_secret);
                             const link = process.env.link + '/verify/' + token;
-                            transporter.sendMail({
-                                from: 'handynotes.service@gmail.com',
-                                to: user.email,
+                            const msg = {
+                                to: user.email, // Change to your recipient
+                                from: process.env.email, // Change to your verified sender
                                 subject: 'Verification of Notes Account.',
+                                text: 'Verify your HandyNotes Account',
                                 html: '<h1>Verify Your Account</h1><br><br><h3>To verify your account, <a href='+link+'>Click here</a>.</h3>'
-                            });
-                            res.sendStatus(200);
+                              }
+                              sgMail
+                                .send(msg)
+                                .then(() => {
+                                    res.sendStatus(200); 
+                                })
+                                .catch((error) => {
+                                  console.error(error)
+                                });
                         }
                     }
                 });
